@@ -1,0 +1,12 @@
+# learning_rate: 0.001
+# batch_size: 32
+# num_epochs: 10
+# path_to_weights: resnet18/weights_0.pth
+# dataset_idx: 1
+
+# for 2nd dataset use this:
+# learning_rate: 0.001
+# batch_size: 32
+# num_epochs: 10
+# path_to_weights: resnet18/weights_<weights_timestamp>.pth # <weights_timestamp> посмотреть на http://localhost:9001, models/resnet18/weights_<weights_timestamp>.pth
+# dataset_idx: 2

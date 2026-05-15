@@ -1,0 +1,36 @@
+stages:
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/common.py
+      - src/data_operations.py
+      - src/model_operations.py
+      - src/s3_operations.py
+      - ai-vs-human-generated-dataset-hw/Train_1/
+      - ai-vs-human-generated-dataset-hw/Train_2/
+    params:
+      - learning_rate
+      - batch_size
+      - num_epochs
+      - path_to_weights
+    outs:
+      - model_weights/resnet18.pth
+  test:
+    cmd: python src/test.py
+    deps:
+      - src/common.py
+      - src/data_operations.py
+      - src/model_operations.py
+      - src/s3_operations.py
+      - ai-vs-human-generated-dataset-hw/Test_1/
+      - ai-vs-human-generated-dataset-hw/Test_2/
+    params:
+      - learning_rate
+      - batch_size
+      - num_epochs
+      - path_to_weights
+    metrics:
+      - metrics/test_metrics.json:
+          cache: false
+
+  
