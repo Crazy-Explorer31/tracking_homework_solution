@@ -9,18 +9,18 @@ from time import time
 
 def main():
     params = load_params()
-    learning_rate, batch_size, num_epochs, path_to_weights, dataset_idx = (
+    learning_rate, batch_size, num_epochs, path_to_result_weights, dataset_idx = (
         float(params["learning_rate"]),
         int(params["batch_size"]),
         int(params["num_epochs"]),
-        params.get("path_to_weights"),  # can be None
+        params.get("path_to_result_weights"),
         int(params["dataset_idx"]),
     )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     test_loader = get_test_dataloader(batch_size=batch_size, dataset_idx=dataset_idx)
 
-    model = get_model(device, path_to_weights)
+    model = get_model(device, path_to_result_weights)
 
     criterion = nn.CrossEntropyLoss()
 

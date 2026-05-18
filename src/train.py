@@ -7,18 +7,26 @@ from time import time
 
 def main():
     params = load_params()
-    learning_rate, batch_size, num_epochs, path_to_weights, dataset_idx = (
+    (
+        learning_rate,
+        batch_size,
+        num_epochs,
+        path_to_initial_weights,
+        path_to_result_weights,
+        dataset_idx,
+    ) = (
         float(params["learning_rate"]),
         int(params["batch_size"]),
         int(params["num_epochs"]),
-        params.get("path_to_weights"),  # can be None
+        params.get("path_to_initial_weights"),  # can be None
+        params.get("path_to_result_weights"),
         int(params["dataset_idx"]),
     )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_loader = get_train_dataloader(batch_size=batch_size, dataset_idx=dataset_idx)
 
-    model = get_model(device, path_to_weights)
+    model = get_model(device, path_to_initial_weights)
     model.train()
 
     criterion = nn.CrossEntropyLoss()
@@ -57,9 +65,7 @@ def main():
     # model dump to s3
     os.makedirs("model_weights", exist_ok=True)
     torch.save(model.state_dict(), "model_weights/resnet18.pth")
-    upload_model_to_s3(
-        "model_weights/resnet18.pth", "models", f"resnet18/weights_{time()}.pth"
-    )
+    upload_model_to_s3("model_weights/resnet18.pth", "models", path_to_result_weights)
 
     return 0
 

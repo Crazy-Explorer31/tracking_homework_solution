@@ -3,7 +3,7 @@ from s3_operations import *
 
 
 def get_model(device, path_to_weigths=None):
-    are_initial_weights = (
+    are_pure_weights = (
         path_to_weigths is not None and path_to_weigths.find("weights_0.pth") != -1
     )
     are_used_weights = (
@@ -11,7 +11,7 @@ def get_model(device, path_to_weigths=None):
     )
 
     model = models.resnet18()
-    if are_initial_weights:
+    if are_pure_weights:
         loaded_state_dict = load_model_state_from_s3("models", path_to_weigths)
         model.load_state_dict(loaded_state_dict)
     num_features = model.fc.in_features

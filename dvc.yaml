@@ -12,7 +12,7 @@ stages:
       - learning_rate
       - batch_size
       - num_epochs
-      - path_to_weights
+      - path_to_initial_weights
     outs:
       - model_weights/resnet18.pth
   test:
@@ -28,7 +28,7 @@ stages:
       - learning_rate
       - batch_size
       - num_epochs
-      - path_to_weights
+      - path_to_initial_weights
     metrics:
       - metrics/test_metrics.json:
           cache: false
