@@ -1,9 +1,9 @@
 import json
 
-from data_operations import *
-from model_operations import *
+from common_tools.data_operations import *
+from common_tools.model_operations import *
 import yaml
-from s3_operations import *
+from common_tools.s3_operations import *
 from time import time
 
 
@@ -20,7 +20,7 @@ def main():
 
     test_loader = get_test_dataloader(batch_size=batch_size, dataset_idx=dataset_idx)
 
-    model = get_model(device, path_to_result_weights)
+    model = get_model_local(device, path_to_result_weights)
 
     criterion = nn.CrossEntropyLoss()
 

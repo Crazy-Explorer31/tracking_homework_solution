@@ -10,7 +10,7 @@ def main():
         int(params["post_train"]["batch_size"]),
         int(params["post_train"]["num_epochs"]),
     )
-    dataset_idx = 1
+    dataset_idx = 2
 
     download_model_from_s3(
         "models",

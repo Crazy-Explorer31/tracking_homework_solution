@@ -2,35 +2,64 @@ stages:
   train:
     cmd: python src/train.py
     deps:
-      - src/common.py
-      - src/data_operations.py
-      - src/model_operations.py
-      - src/s3_operations.py
+      - src/common_tools/imports.py
+      - src/common_tools/data_operations.py
+      - src/common_tools/model_operations.py
+      - src/common_tools/s3_operations.py
       - ai-vs-human-generated-dataset-hw/Train_1/
-      - ai-vs-human-generated-dataset-hw/Train_2/
     params:
-      - learning_rate
-      - batch_size
-      - num_epochs
-      - path_to_initial_weights
+      - train.learning_rate
+      - train.batch_size
+      - train.num_epochs
     outs:
-      - model_weights/resnet18.pth
-  test:
-    cmd: python src/test.py
+      - model_weights/weights_1.pth
+
+  validate_trained:
+    cmd: python src/validate_trained.py
     deps:
-      - src/common.py
-      - src/data_operations.py
-      - src/model_operations.py
-      - src/s3_operations.py
+      - model_weights/weights_1.pth
       - ai-vs-human-generated-dataset-hw/Test_1/
-      - ai-vs-human-generated-dataset-hw/Test_2/
-    params:
-      - learning_rate
-      - batch_size
-      - num_epochs
-      - path_to_initial_weights
     metrics:
-      - metrics/test_metrics.json:
+      - metrics/metrics_of_trained.json:
           cache: false
 
-  
+  upload_trained:
+    cmd: python src/upload_trained.py
+    deps:
+      - model_weights/weights_1.pth
+
+  post_train:
+    cmd: python src/post_train.py
+    deps:
+      - src/common_tools/imports.py
+      - src/common_tools/data_operations.py
+      - src/common_tools/model_operations.py
+      - src/common_tools/s3_operations.py
+      - ai-vs-human-generated-dataset-hw/Train_2/
+      - model_weights/weights_1.pth
+    params:
+      - post_train.learning_rate
+      - post_train.batch_size
+      - post_train.num_epochs
+    outs:
+      - model_weights/weights_2.pth
+
+  validate_post_trained:
+    cmd: python src/validate_post_trained.py
+    deps:
+      - model_weights/weights_2.pth
+      - ai-vs-human-generated-dataset-hw/Test_2/
+    metrics:
+      - metrics/metrics_of_post_trained.json:
+          cache: false
+
+  upload_post_trained:
+    cmd: python src/upload_post_trained.py
+    deps:
+      - model_weights/weights_2.pth
+
+  compare_models:
+    cmd: python src/compare_models.py
+    deps:
+      - metrics/metrics_of_trained.json
+      - metrics/metrics_of_post_trained.json
