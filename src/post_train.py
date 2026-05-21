@@ -12,12 +12,6 @@ def main():
     )
     dataset_idx = 2
 
-    download_model_from_s3(
-        "models",
-        f"resnet18/weights_{dataset_idx - 1}.pth",
-        f"model_weights/weights_{dataset_idx - 1}.pth",
-    )
-
     model_wrapper = ResNetModelWrapper(
         f"model_weights/weights_{dataset_idx - 1}.pth",
         learning_rate,

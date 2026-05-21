@@ -2,6 +2,7 @@ stages:
   train:
     cmd: python src/train.py
     deps:
+      - src/train.py
       - src/common_tools/imports.py
       - src/common_tools/data_operations.py
       - src/common_tools/model_operations.py
@@ -17,6 +18,7 @@ stages:
   validate_trained:
     cmd: python src/validate_trained.py
     deps:
+      - src/validate_trained.py
       - model_weights/weights_1.pth
       - ai-vs-human-generated-dataset-hw/Test_1/
     metrics:
@@ -26,11 +28,13 @@ stages:
   upload_trained:
     cmd: python src/upload_trained.py
     deps:
+      - src/upload_trained.py
       - model_weights/weights_1.pth
 
   post_train:
     cmd: python src/post_train.py
     deps:
+      - src/post_train.py
       - src/common_tools/imports.py
       - src/common_tools/data_operations.py
       - src/common_tools/model_operations.py
@@ -47,6 +51,7 @@ stages:
   validate_post_trained:
     cmd: python src/validate_post_trained.py
     deps:
+      - src/validate_post_trained.py
       - model_weights/weights_2.pth
       - ai-vs-human-generated-dataset-hw/Test_2/
     metrics:
@@ -56,10 +61,14 @@ stages:
   upload_post_trained:
     cmd: python src/upload_post_trained.py
     deps:
+      - src/upload_post_trained.py
       - model_weights/weights_2.pth
 
   compare_models:
-    cmd: python src/compare_models.py
+    cmd: python src/compare_models.py && python src/compare_models.py >metrics/comparison.txt
     deps:
+      - src/compare_models.py
       - metrics/metrics_of_trained.json
       - metrics/metrics_of_post_trained.json
+    outs:
+      - metrics/comparison.txt

@@ -24,8 +24,7 @@ def get_model(device, path_to_weigths=None):
         model.load_state_dict(loaded_state_dict)
     model = model.to(device)
 
-    print(f"Model architecture:")
-    print(model)
+    print(f"Model constructed")
 
     return model
 
@@ -47,8 +46,7 @@ def get_model_local(device, path_to_weigths):
         model.load_state_dict(torch.load(path_to_weigths))
     model = model.to(device)
 
-    print(f"Model architecture:")
-    print(model)
+    print(f"Model constructed")
 
     return model
 
@@ -119,6 +117,7 @@ class ResNetModelWrapper:
         num_epochs,
     ):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(f"Using device: {self.device}")
         self.model = get_model_local(self.device, path_to_weights)
 
         self.criterion = nn.CrossEntropyLoss()
@@ -140,7 +139,7 @@ class ResNetModelWrapper:
             batch_size=self.batch_size, dataset_idx=dataset_idx
         )
 
-        writer = SummaryWriter(f"my_logs/resnet18_on_dataset_{dataset_idx}")
+        writer = SummaryWriter(f"my_logs/resnet18_stage_{dataset_idx}")
 
         self.model.train()
         for epoch in range(self.num_epochs):

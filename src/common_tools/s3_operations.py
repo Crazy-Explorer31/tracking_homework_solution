@@ -68,7 +68,7 @@ def download_model_from_s3(
 
     with open(local_path, "wb") as f:
         client.download_fileobj(bucket, key, f)
-    print(f"Модель скачана: {local_path}")
+    print(f"Model downloaded: {local_path}")
 
 
 def load_model_state_from_s3(

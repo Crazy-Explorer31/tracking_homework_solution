@@ -10,6 +10,10 @@ import sys
 import json
 from colorama import init, Fore, Style
 
+# from colorama import init
+
+# init(strip=False)
+
 init(autoreset=True)
 
 

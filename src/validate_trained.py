@@ -12,6 +12,8 @@ def main():
     criterion = nn.CrossEntropyLoss()
     dataset_idx = 1
 
+    print(f"Using device: {device}")
+
     test_loader = get_test_dataloader(batch_size=batch_size, dataset_idx=dataset_idx)
 
     model = get_model_local(device, f"model_weights/weights_{dataset_idx}.pth")
